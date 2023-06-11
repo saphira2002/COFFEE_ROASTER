@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Client Page</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
+    <script>
+        // Establish WebSocket connection
+        const socket = io();
+
+        // Function to send data to the server
+        function sendData() {
+            const amount = document.getElementById('amount').value;
+            const temp = document.getElementById('temp').value;
+            const timer = document.getElementById('timer').value;
+
+            // Emit the data to the server
+            socket.emit('send_data', { amount, temp, timer });
+        }
+
+        // Function to handle response from the server
+        socket.on('receive_response', function (data) {
+            const response = data.response;
+
+            // Update the HTML element to display the response
+            document.getElementById('response').innerHTML += response + '<br>';
+        });
+    </script>
+</head>
+<body>
+    <h1>Client Page</h1>
+
+    <label for="amount">Amount:</label>
+    <input type="text" id="amount"><br>
+
+    <label for="temp">Temperature:</label>
+    <input type="text" id="temp"><br>
+
+    <label for="timer">Timer:</label>
+    <input type="text" id="timer"><br>
+
+    <button onclick="sendData()">Send Data</button>
+
+    <div id="response"></div>
+</body>
+</html>
